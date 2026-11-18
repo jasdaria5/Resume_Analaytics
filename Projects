@@ -4,3 +4,61 @@ It is a multi-agent healthcare triage platform designed to process user-provided
 Instead of using one general-purpose AI agent for everything, the system uses specialized agents with different responsibilities.
 2. Architecture
 Frontend/User input -> FastAPI (endpoint) -> Pydantic Validation -> Agent Orchaestration Layer(GOOGLE ADK-> Agent1: Process health information, Agent2: Risk assessment, Agent3: Department routing, Agent4: Prescribes actions -> Tools+Guardrails -> Info stored in postgre sql 
+3. Code:
+A. Basic Google ADK agent
+#In google ADK, import agents
+from google.adk.agents import Agent
+#Use the Agent() and specify the name, model, instruction given to the agent
+medical_agent = Agent(
+    name="medical_analyzer",
+    model="gemini-2.5-flash",
+    instruction="""
+    Analyze the provided health information.
+    Provide structured, cautious insights.
+    Do not claim to diagnose diseases.
+    """
+B. Tool calling
+#Tool calling involves defining a function 
+def get_health_information(topic: str):
+    return {
+        "topic": topic,
+        "information": "Relevant health information"
+    }
+#Then, create the agent and under tools call the function
+agent = Agent(
+    name="health_agent",
+    model="gemini-2.5-flash",
+    instruction="Use tools when necessary.",
+    tools=[get_health_information]
+)
+C. FastAPI endpoint
+#Import pydantic and fastapi
+from fastapi import FastAPI
+from pydantic import BaseModel
+#Create the application
+app = FastAPI()
+#Create a basic class
+class HealthRequest(BaseModel):
+    symptoms: str
+    age: int
+#Create the analysis using the data
+@app.post("/analyze")
+def analyze(data: HealthRequest):
+    return {
+        "message": "Analysis requested",
+        "symptoms": data.symptoms,
+        "age": data.age
+    }
+D. Guardrail
+#Take the symptoms into consideration
+def validate_input(symptoms):
+  #Ensure the symptoms is within 2000 characters 
+    if not symptoms or len(symptoms) > 2000:
+        raise ValueError("Invalid input")
+
+    return True
+)
+What is Google ADK?	Google's framework for developing, orchestrating and evaluating AI agents.
+What is orchestration?	Coordinating agents, tasks and their execution sequence.
+What is fallback handling?	An alternative response or execution path when the primary operation fails.
+Why Pydantic?	Data validation and schema enforcement.
