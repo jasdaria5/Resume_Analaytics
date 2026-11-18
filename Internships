@@ -1,0 +1,30 @@
+1. Gidy -> soln eng
+Regression testing	Checking that new changes haven't broken existing features
+import { test, expect } from '@playwright/test';
+
+test('Login functionality', async ({ page }) => {
+    await page.goto('https://example.com');
+
+    await page.fill('#email', 'test@gmail.com');
+    await page.fill('#password', 'password123');
+
+    await page.click('button[type="submit"]');
+
+    await expect(page).toHaveURL(/dashboard/);
+});
+page.goto() – Navigate to a URL.
+page.fill() – Enter text.
+page.click() – Click an element.
+page.locator() – Locate an element.
+expect() – Verify expected results.
+• Playwright: It is a tool that acts like a robot user to automatically click buttons, type text, and test websites for you.
+• Playwright vs. Selenium: Playwright is a newer, faster tool that automatically waits for buttons to appear before clicking, while Selenium is an older tool that often needs manual pauses to avoid errors.
+• Regression testing: It is double-checking that old, working parts of a website still work properly after you add something new.
+• Locators: They are the "addresses" or labels (like button text or IDs) that tell the test robot exactly which item on a webpage to find and click.
+• Assertion: It is a final checkpoint in a test that asks, "Did what I expected actually happen?" to decide if the test passed or failed.
+• Asynchronous functions: They tell the code to politely wait for slow browser tasks (like loading a page) to finish before moving to the next step.
+• Chromium, Firefox, and WebKit: They are the core "engines" under the hood that power popular web browsers like Chrome, Firefox, and Safari.
+• Testing an invalid login: Type in a wrong username or password, click "Log In," and make sure the website blocks you and shows an error message.
+
+
+page.screenshot() – Capture a screenshot.
