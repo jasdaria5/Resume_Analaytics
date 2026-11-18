@@ -117,3 +117,61 @@ def rag_pipeline(question):
     answer = llm.generate(prompt)
 
     return answer
+
+III) Project 3: AgentPay – Agentic Payment Automation
+
+1. Problem statement
+AgentPay automates payment operations using natural-language intent classification and agent-based task execution, while enforcing authorization and transaction safety.
+Example:
+User: "Pay ₹5,000 to Vendor A."
+The system needs to understand the request, extract the amount and recipient, validate the transaction, check policies and invoke the payment operation.
+2. Flow
+-> React sends the request to the backend.
+-> DistilBERT classifies the intent as a payment request. (Natural lang intent)
+-> The system extracts transaction entities such as amount and recipient.
+-> Google ADK coordinates the payment workflow.
+-> Validation checks whether the amount and recipient are valid.
+-> The policy engine checks whether approval is required.
+-> A human approves the high-value transaction.
+-> The payment tool communicates with Razorpay.
+-> The result is recorded in PostgreSQL.
+3. Code:
+A. Transaction validation
+def validate_payment(amount, recipient):
+    if amount <= 0:
+        return False
+
+    if not recipient:
+        return False
+
+    return True
+B. Approval mechanism
+def requires_approval(amount):
+    APPROVAL_LIMIT = 10000
+
+    if amount > APPROVAL_LIMIT:
+        return True
+
+    return False
+C. Intent classification – conceptual example
+from transformers import pipeline
+
+classifier = pipeline(
+    "text-classification",
+    model="YOUR_DISTILBERT_MODEL"
+)
+
+result = classifier(
+    "Transfer 5000 rupees to ABC"
+)
+
+print(result)
+What is DistilBERT?	A smaller, faster distilled version of BERT.
+What is NLP?	Natural Language Processing.
+What is intent classification?	Identifying the purpose of a user's text.
+What are entities?	Important extracted values like amount, name and date.
+What is HITL?	Human-in-the-Loop; human approval during automated workflows.
+Why Razorpay?	Payment gateway integration.
+What is an audit trail?	A record of actions and transactions.
+What is idempotency?	Repeating an operation safely without duplicating its effect.
+Why guardrails?	To prevent unauthorized or unsafe transactions.
