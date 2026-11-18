@@ -72,3 +72,38 @@ def generate_notes(text):
     )
 
     return response.text
+• LLM (Large Language Model): It is an AI program trained on massive amounts of text so it can understand, summarize, and write like a human.
+• Prompt engineering: It is the skill of writing clear, specific instructions to get the best and most accurate answers from an AI.
+• Gemini API: It is a bridge that lets developers connect Google's Gemini AI directly into their own apps, websites, or code.
+• PDF text extraction: It is the process of using code to automatically copy and pull the readable words out of a digital PDF file.
+• If a PDF is scanned: The computer sees the pages as flat pictures rather than selectable text, so standard text-copying tools will return nothing.
+• OCR (Optical Character Recognition): It is technology that "reads" pictures of text (like a scanned document or photo) and turns them into real, editable words.
+• Tokenization: It is how an AI chops up sentences into small pieces—like whole words or parts of words—so it can count and process them.
+• Hallucination: It is when an AI confidently makes up false facts or details because it is guessing the next word rather than knowing the truth.
+• Handling a very large PDF: You break the big document into smaller chunks, summarize each piece separately, and then combine those mini-summaries into one final overview.
+• Improving summary accuracy: You give the AI strict rules to only use facts from the provided text, ask it to cite page numbers, and request bullet points instead of long paragraphs.
+
+3. GirlScript Summer of Code – Open Source Contributor
+
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        alert("Copied successfully!");
+    } catch (error) {
+        console.error("Copy failed:", error);
+    }
+}
+#When the copy to clipboard button is clicked, call the function and return the response
+<button onClick={() => copyText(response)}>
+    Copy Response
+</button>
+• React: It is a popular JavaScript tool for building fast, interactive website user interfaces out of small, reusable pieces.
+• Components: They are the independent, reusable building blocks of a React website, like a button, a search bar, or a navigation menu.
+• Props (Properties): They are pieces of information passed down from a parent component to a child component to customize how it looks or acts.
+• State: It is a component's personal memory that stores changing data, like whether a menu is open or what a user has typed into a box.
+• Event handler: It is a function that waits for a user action—like clicking a button or pressing a key—and runs specific code in response.
+• Asynchronous function: It is a function that starts a slow task (like fetching data from the internet) and pauses its own steps without freezing the rest of the website.
+• Clipboard API: It is a built-in browser feature that lets your website safely copy text to or paste text from the user's device clipboard.
+• Error handling: It is writing backup safety code (like try/catch blocks) to catch mistakes gracefully so your app shows a helpful message instead of crashing.
+• GitHub pull request (PR): It is a formal request asking a project's owners to review your code changes and merge them into the main project.
+• Open-source contribution: It is improving a publicly shared software project by fixing bugs, adding features, or updating documentation for the community.
