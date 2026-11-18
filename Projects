@@ -1,4 +1,5 @@
 I) Project 1: Agentic Medical Analyzer
+
 1. What problem does it solve?
 It is a multi-agent healthcare triage platform designed to process user-provided health information and generate structured, context-aware medical insights.
 Instead of using one general-purpose AI agent for everything, the system uses specialized agents with different responsibilities.
@@ -62,3 +63,57 @@ What is Google ADK?	Google's framework for developing, orchestrating and evaluat
 What is orchestration?	Coordinating agents, tasks and their execution sequence.
 What is fallback handling?	An alternative response or execution path when the primary operation fails.
 Why Pydantic?	Data validation and schema enforcement.
+
+II) Project 2: Unilog – AI Product Intelligence
+1. What problem does it solve?
+It uses Retrieval-Augmented Generation (RAG) to answer questions using relevant information retrieved from product documents instead of depending entirely on the LLM's pretrained knowledge.
+2. Flow:
+PDF/Product doc -> Document loading -> Text cleaning+chunking -> Tokenisation+Embedding -> Qdrant vector database 
+Query phase:
+User Query -> Convert to embedding -> Semantic Similarity Search -> Context+prompt -> Gemini/OpenAI -> FastAPI -> React
+3. Code:
+A. Chunking
+def chunk_text(text, chunk_size=500, overlap=50):
+    chunks = []
+    start = 0
+
+    while start < len(text):
+        end = start + chunk_size
+        chunks.append(text[start:end])
+        start += chunk_size - overlap
+
+    return chunks
+B. Embeddings
+#For sentence_tranformers use model all-MiniLM-L6-V2
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer(
+    "all-MiniLM-L6-v2"
+)
+
+text = ["AI improves product discovery"]
+
+vectors = model.encode(text)
+C. Cosine similarity
+Similarity(A,B)=(A.B)/||A||||B||
+A higher cosine similarity generally means two vectors point in more similar directions.
+print(vectors.shape)
+def rag_pipeline(question):
+    query_vector = embed(question)
+
+    documents = vector_db.search(
+        query_vector
+    )
+
+    context = "\n".join(documents)
+
+    prompt = f"""
+    Answer using the context only.
+
+    Context: {context}
+    Question: {question}
+    """
+
+    answer = llm.generate(prompt)
+
+    return answer
