@@ -175,3 +175,103 @@ Why Razorpay?	Payment gateway integration.
 What is an audit trail?	A record of actions and transactions.
 What is idempotency?	Repeating an operation safely without duplicating its effect.
 Why guardrails?	To prevent unauthorized or unsafe transactions.
+
+IV) Project 4: Chakravyuh AI – Intelligent Network Security
+
+1. Problem statement
+An AI-driven network security system that monitors network traffic, detects anomalous behaviour, predicts potential threats and supports targeted host isolation.
+2. Architecture
+Network Traffic Collection(Packets, flows, network events) -> Feature Extraction + Preprocessing -> ST-GNN-Spatial and temporal pattern analysis(representation as graph) -> RSSM-Temporal/state-based prediction modelling(To forecast steps) -> Threat Detection(Anomaly identification and threat events) -> FastAPI + WebSockets(Backend + real-time updates) -> Next.js Dashboard + Security Event Logs
+ST-GNN – Spatio-Temporal Graph Neural Network
+- Spatial: Relationships between connected network nodes.
+- Temporal: How network behaviour changes over time.
+- Graph: Nodes and edges represent entities and relationships.
+Example: Computers are nodes, network connections are edges.
+RSSM – Recurrent State-Space Model
+A model that learns representations of system states and their evolution over time. It can be used to predict future states from sequential observations.
+WebSockets
+WebSockets maintain a persistent, two-way connection between the client and server. (To trace the steps in virtual world and ensure that if there's a threat it is detected and the network connection is disconnected)
+Unlike ordinary HTTP request-response communication, the server can push updates to the client without waiting for another request.
+3. Code
+-> FastAPI backend:
+from fastapi import FastAPI, WebSocket
+
+app = FastAPI()
+
+@app.websocket("/ws")
+async def websocket_endpoint(ws: WebSocket):
+    await ws.accept()
+
+    while True:
+        data = await ws.receive_text()
+
+        await ws.send_text(
+            f"Security event: {data}"
+        )
+-> Client:
+const socket = new WebSocket(
+    "ws://localhost:8000/ws"
+);
+
+socket.onmessage = (event) => {
+    console.log(event.data);
+};
+
+socket.onopen = () => {
+    socket.send("Network anomaly detected");
+};
+
+V) Project 5: VisionAI – Computer Vision Intelligence
+1. Problem statement
+An image classification system that uses Convolutional Neural Networks to identify and classify images.
+2. Flow
+Input image -> preprocessing -> CNN model (convolution-ReLu-Pooling) -> Flatten+dense layer -> Prediction -> FastAPI -> React -> PostGre SQL
+3. Explain CNN
+A Convolutional Neural Network is a deep learning architecture primarily used for image-related tasks.
+Layer	Purpose
+Input	Receives image pixels
+Convolution	Extracts image features
+ReLU	Introduces non-linearity
+Pooling	Reduces spatial dimensions
+Flatten	Converts feature maps into a vector
+Dense	Performs classification
+Softmax	Produces class probabilities
+4. Code
+-> CNN
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+model = models.Sequential([
+    layers.Input(shape=(128, 128, 3)),
+
+    layers.Conv2D(
+        32, (3, 3), activation='relu'
+    ),
+
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Conv2D(
+        64, (3, 3), activation='relu'
+    ),
+
+    layers.MaxPooling2D((2, 2)),
+
+    layers.Flatten(),
+
+    layers.Dense(128, activation='relu'),
+
+    layers.Dense(5, activation='softmax')
+])
+
+model.compile(
+    optimizer='adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+-> Training
+model.fit(
+    train_data,
+    epochs=10,
+    validation_data=val_data
+)
+model.save("vision_model.keras")
