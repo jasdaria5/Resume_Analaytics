@@ -17,6 +17,7 @@ page.fill() – Enter text.
 page.click() – Click an element.
 page.locator() – Locate an element.
 expect() – Verify expected results.
+page.screenshot() – Capture a screenshot.
 • Playwright: It is a tool that acts like a robot user to automatically click buttons, type text, and test websites for you.
 • Playwright vs. Selenium: Playwright is a newer, faster tool that automatically waits for buttons to appear before clicking, while Selenium is an older tool that often needs manual pauses to avoid errors.
 • Regression testing: It is double-checking that old, working parts of a website still work properly after you add something new.
@@ -26,5 +27,48 @@ expect() – Verify expected results.
 • Chromium, Firefox, and WebKit: They are the core "engines" under the hood that power popular web browsers like Chrome, Firefox, and Safari.
 • Testing an invalid login: Type in a wrong username or password, click "Log In," and make sure the website blocks you and shows an error message.
 
+2. HSR Solutions
+---Flow: PDF Upload->PyPD2->Extract text using PdfReader->Python to process(clean)->Integrate with Gemini API + Prompt eng->Generate notes
 
-page.screenshot() – Capture a screenshot.
+#PDF Processing
+
+from PyPDF2 import PdfReader
+
+def extract_pdf_text(file_path):
+    reader = PdfReader(file_path)
+
+    text = ""
+    #Read every page
+    for page in reader.pages:
+        content = page.extract_text() #Extract text from every page
+        if content: #If content exists
+            text += content + "\n" #Add it to text and in case of a new page move to a new line
+
+    return text
+
+#Integration with Gemini Model
+
+from google import genai
+#Integrate and fetch from gemini API
+client = genai.Client(api_key="YOUR_API_KEY")
+#Use prompt eng
+def generate_notes(text):
+    prompt = f"""
+    Convert this content into structured
+    NEET revision notes.
+
+    Include:
+    1. Important concepts
+    2. Key definitions
+    3. Important points
+
+    Content:
+    {text}
+    """
+    #From models.generate_content choose the model and provide the prompt as content
+    response = client.models.generate_content(
+        model="YOUR_AVAILABLE_GEMINI_MODEL",
+        contents=prompt
+    )
+
+    return response.text
