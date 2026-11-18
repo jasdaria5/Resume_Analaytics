@@ -1,0 +1,6 @@
+I) Project 1: Agentic Medical Analyzer
+1. What problem does it solve?
+It is a multi-agent healthcare triage platform designed to process user-provided health information and generate structured, context-aware medical insights.
+Instead of using one general-purpose AI agent for everything, the system uses specialized agents with different responsibilities.
+2. Architecture
+Frontend/User input -> FastAPI (endpoint) -> Pydantic Validation -> Agent Orchaestration Layer(GOOGLE ADK-> Agent1: Process health information, Agent2: Risk assessment, Agent3: Department routing, Agent4: Prescribes actions -> Tools+Guardrails -> Info stored in postgre sql 
